@@ -1,0 +1,12 @@
+INPUT(
+./debug\main.o
+./debug\MainWindow.o
+./debug\SocketHandle.o
+./debug\StrategyHandle.o
+./debug\Ihandler.o
+./debug\AcountManage.o
+./debug\DataBase.o
+./debug\UserHandle.o
+./debug\moc_MainWindow.o
+./debug\moc_SocketHandle.o
+);

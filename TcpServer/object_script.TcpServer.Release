@@ -1,0 +1,12 @@
+INPUT(
+./release\main.o
+./release\MainWindow.o
+./release\SocketHandle.o
+./release\StrategyHandle.o
+./release\Ihandler.o
+./release\AcountManage.o
+./release\DataBase.o
+./release\UserHandle.o
+./release\moc_MainWindow.o
+./release\moc_SocketHandle.o
+);

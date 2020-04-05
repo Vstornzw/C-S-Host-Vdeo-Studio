@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QTcpServer>
+#include "protocol.h"
+#include <QVector>
 
 namespace Ui {
 class MainWindow;

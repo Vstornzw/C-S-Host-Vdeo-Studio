@@ -26,8 +26,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 
 SOURCES += main.cpp\
-        MainWindow.cpp
+        MainWindow.cpp \
+    SocketHandle.cpp \
+    StrategyHandle.cpp \
+    Ihandler.cpp \
+    AcountManage.cpp \
+    DataBase.cpp \
+    UserHandle.cpp
 
-HEADERS  += MainWindow.h
+HEADERS  += MainWindow.h \
+    SocketHandle.h \
+    protocol.h \
+    StrategyHandle.h \
+    Ihandler.h \
+    AcountManage.h \
+    DataBase.h \
+    UserHandle.h \
+    User.h
 
 FORMS    += MainWindow.ui
