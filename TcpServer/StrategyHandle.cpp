@@ -15,6 +15,11 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
     break;
   case Protocol::Regitst:
       i_handle = new AcountManage();//账户注册
+    break;
+  case Protocol::Login:
+      qDebug()<<"测试1";
+      i_handle = new AcountManage();//账户登录
+    break;
   default:
     break;
   }

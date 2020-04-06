@@ -2,7 +2,7 @@
 #define USER_H
 #include <QString>
 #include <string>
-
+using namespace std;
 //====1 在确定账户是否注册时候会用上====//
 class User {
 public:

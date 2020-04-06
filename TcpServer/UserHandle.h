@@ -10,6 +10,9 @@ public:
     bool HasUser(const QString &UserName);
     bool InsterUder(const User &user);
 
+    bool CheckUserAndPwd(const User& user);
+    bool ModifyOnline(const QString& name, bool online);
+
 };
 
 #endif // USERHANDLE_H

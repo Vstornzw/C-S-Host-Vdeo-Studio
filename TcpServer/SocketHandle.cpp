@@ -22,8 +22,9 @@ void SocketHandle::onReadSlot() {
   while((len = p.unpack(byte)) > 0) {
     byte = byte.mid(len);//解析后面的数据
     //处理输出包
-    qDebug()<<"服务器接收数据："<<"类型:"<<p.GetType()<<";账户名:"
-            <<";金额："<<p["money"].toDouble()<< "；积分:" << p["score"].toInt();
+    qDebug() << "服务器接收数据："<< "类型:" << p.GetType() << "；账户名:"
+             << p["user_name"].toString()<< "；密码:" << p["user_pwd"].toString()
+             << "；金额:" <<p["money"].toDouble() << "；积分:" << p["score"].toInt();
 
     //调整策略
     StrategyHandle sh;

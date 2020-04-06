@@ -10,6 +10,7 @@ public:
 
     void Handle(QTcpSocket *socket, const Protocol &p);
     void RegistHandle(QTcpSocket *socket ,const Protocol &p); //注册账户
+    void LoginHandle(QTcpSocket *socket ,const Protocol &p);//登录账户
 };
 
 #endif // ACOUNTMANAGE_H
