@@ -23,7 +23,10 @@ void AcountManage::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::Login:
     qDebug()<<"测试2";
     this->LoginHandle(socket,p);
-      break;
+    break;
+  case Protocol::QuitClient:
+    this->QuitAcount(socket,p);
+    break;
   default:
     break;
   }
@@ -116,5 +119,43 @@ void AcountManage::LoginHandle(QTcpSocket *socket, const Protocol &p) {
   //登录成功，进入直播间大厅，自动刷新已存在的直播间
 
 }
+
+void AcountManage::QuitAcount(QTcpSocket *socket, const Protocol &p) {
+  QString user_name = p["user_name"].toString();
+  Protocol pRet(Protocol::QuitClient);
+  UserHandle* user_handle = new UserHandle();
+  bool ret = user_handle->HasUser(user_name);
+  if(ret) {
+    ret = user_handle->ModifyOnline(user_name,false);
+    if(!ret) {
+      qDebug()<<"关闭客户端失败";
+      pRet["result"] = "QuitRoomFalse";
+    } else {
+      pRet["result"] = "QuitRoomTrue";
+    }
+  }
+  socket->write(pRet.pack());
+  //下线成功，直播间大厅自动刷新已存在的直播间
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

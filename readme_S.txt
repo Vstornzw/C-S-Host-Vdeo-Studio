@@ -5,7 +5,7 @@
  1 cmd->mysql -u root -p
  2 show databases;
  3 drop database (Êı¾İ¿âÃû)
- 4 create database stu2020
+ 4 create database stu2020£»
  5 use stu2020
  6 create table ta_user(Id varchar(20),user_name varchar(20),
 user_pwd varchar(20),online varchar(20),money varchar(20),

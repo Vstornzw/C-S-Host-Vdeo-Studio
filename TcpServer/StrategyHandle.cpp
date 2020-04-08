@@ -14,11 +14,14 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::none:
     break;
   case Protocol::Regitst:
-      i_handle = new AcountManage();//账户注册
+    i_handle = new AcountManage();//账户注册
     break;
   case Protocol::Login:
-      qDebug()<<"测试1";
-      i_handle = new AcountManage();//账户登录
+    qDebug()<<"测试1";
+    i_handle = new AcountManage();//账户登录
+    break;
+  case Protocol::QuitClient:
+    i_handle = new AcountManage();//账户下线
     break;
   default:
     break;
