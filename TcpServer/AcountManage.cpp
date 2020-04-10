@@ -27,6 +27,8 @@ void AcountManage::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::QuitClient:
     this->QuitAcount(socket,p);
     break;
+  case Protocol::DeleteUser:
+    this->DeleteAcount(socket,p);
   default:
     break;
   }
@@ -120,6 +122,7 @@ void AcountManage::LoginHandle(QTcpSocket *socket, const Protocol &p) {
 
 }
 
+//=======================账户下线==============================//
 void AcountManage::QuitAcount(QTcpSocket *socket, const Protocol &p) {
   QString user_name = p["user_name"].toString();
   Protocol pRet(Protocol::QuitClient);
@@ -142,8 +145,23 @@ void AcountManage::QuitAcount(QTcpSocket *socket, const Protocol &p) {
 
 
 
+//=======================注销账户==============================//
 
-
+void AcountManage::DeleteAcount(QTcpSocket *socket, const Protocol &p) {
+  QString user_name = p["user_name"].toString();
+  Protocol pRet(Protocol::DeleteUser);
+  UserHandle *user_handle = new UserHandle();
+  bool ret = user_handle->HasUser(user_name);
+  if(ret) {
+    ret = user_handle->DeleteUser(user_name);
+    if(!ret) {
+      qDebug()<<"注销账户失败";
+      pRet["result"] = "DeleteUserFalse";
+    }
+    pRet["result"] = "DeleteUserTrue";
+  }
+  socket->write(pRet.pack());
+}
 
 
 

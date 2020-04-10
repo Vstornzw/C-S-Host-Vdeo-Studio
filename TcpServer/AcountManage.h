@@ -12,6 +12,7 @@ public:
     void RegistHandle(QTcpSocket *socket ,const Protocol &p); //注册账户
     void LoginHandle(QTcpSocket *socket ,const Protocol &p);//登录账户
     void QuitAcount(QTcpSocket *socket, const Protocol &p);//账户下线
+    void DeleteAcount(QTcpSocket *socket,const Protocol &p);//注销账户
 };
 
 #endif // ACOUNTMANAGE_H

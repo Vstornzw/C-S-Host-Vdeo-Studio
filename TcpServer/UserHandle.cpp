@@ -95,3 +95,48 @@ bool UserHandle::ModifyOnline(const QString& name, bool online) {
   return ret;
 
 }
+
+
+
+//====注销账户====//
+bool UserHandle::DeleteUser(QString name) {
+  DataBase* instance = DataBase::GetInstance();
+  instance->CreatConnection();
+  QSqlQuery query;
+  query.prepare("delete from tb_user where user_name = :user_name");
+  query.bindValue(":user_name",name);
+  bool ret = query.exec();
+  if(!ret) {
+    qDebug()<<query.lastError().text();
+  }
+  instance->RemoveConnection();
+  return ret;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

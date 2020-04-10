@@ -23,6 +23,8 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::QuitClient:
     i_handle = new AcountManage();//账户下线
     break;
+  case Protocol::DeleteUser:
+    i_handle = new AcountManage();//注销账户
   default:
     break;
   }
