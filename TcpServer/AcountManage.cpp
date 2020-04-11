@@ -139,6 +139,8 @@ void AcountManage::QuitAcount(QTcpSocket *socket, const Protocol &p) {
   }
   socket->write(pRet.pack());
   //下线成功，直播间大厅自动刷新已存在的直播间
+//  RoomManage *rm = new RoomManage();---------------------------------------------------------------------------
+//  rm->roomListHandle(socket,p);---------------------------------------------------------------------------
 
 }
 
@@ -161,6 +163,10 @@ void AcountManage::DeleteAcount(QTcpSocket *socket, const Protocol &p) {
     pRet["result"] = "DeleteUserTrue";
   }
   socket->write(pRet.pack());
+
+  //下线成功，直播间大厅自动刷新已存在的直播间
+//  RoomManage *rm = new RoomManage();---------------------------------------------------------------------------
+//  rm->roomListHandle(socket,p);---------------------------------------------------------------------------
 }
 
 

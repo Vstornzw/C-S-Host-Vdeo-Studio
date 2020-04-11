@@ -7,6 +7,7 @@ INPUT(
 ./debug\AcountManage.o
 ./debug\DataBase.o
 ./debug\UserHandle.o
+./debug\RoomManage.o
 ./debug\moc_MainWindow.o
 ./debug\moc_SocketHandle.o
 );

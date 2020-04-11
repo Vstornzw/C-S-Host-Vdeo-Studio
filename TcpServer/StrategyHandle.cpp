@@ -1,5 +1,6 @@
 ﻿#include "StrategyHandle.h"
 #include "AcountManage.h"
+#include "RoomManage.h"
 
 
 StrategyHandle::StrategyHandle()
@@ -25,6 +26,9 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
     break;
   case Protocol::DeleteUser:
     i_handle = new AcountManage();//注销账户
+    break;
+  case Protocol::Charge:
+    i_handle = new RoomManage();//账户充值 ，这里要加入RoomManage.h文件
   default:
     break;
   }
