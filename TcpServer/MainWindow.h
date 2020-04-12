@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include "protocol.h"
 #include <QVector>
+#include "NewUserVector.h"
 
 namespace Ui {
 class MainWindow;

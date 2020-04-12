@@ -17,8 +17,6 @@ public:
     return this->client_socket;
   }
 
-signals:
-
 public slots:
   void onReadSlot();
 private:

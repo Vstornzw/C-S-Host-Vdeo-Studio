@@ -31,7 +31,9 @@ void MainWindow::onNewConnection() {
 
   //将与客户端的通信交给另一个对象处理
   SocketHandle *socket_handler = new SocketHandle(tcp_socket,this);//专门处理套接字的类
-
+  //添加新的客户以及相关信息到一个容器里面
+  NewUserVector* instance = NewUserVector::GetInstance();
+  instance->InsertSocket(socket_handler);
 
 
 

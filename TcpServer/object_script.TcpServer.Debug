@@ -8,6 +8,9 @@ INPUT(
 ./debug\DataBase.o
 ./debug\UserHandle.o
 ./debug\RoomManage.o
+./debug\Room.o
+./debug\RoomVector.o
+./debug\NewUserVector.o
 ./debug\moc_MainWindow.o
 ./debug\moc_SocketHandle.o
 );

@@ -33,7 +33,10 @@ SOURCES += main.cpp\
     AcountManage.cpp \
     DataBase.cpp \
     UserHandle.cpp \
-    RoomManage.cpp
+    RoomManage.cpp \
+    Room.cpp \
+    RoomVector.cpp \
+    NewUserVector.cpp
 
 HEADERS  += MainWindow.h \
     SocketHandle.h \
@@ -44,6 +47,9 @@ HEADERS  += MainWindow.h \
     DataBase.h \
     UserHandle.h \
     User.h \
-    RoomManage.h
+    RoomManage.h \
+    Room.h \
+    RoomVector.h \
+    NewUserVector.h
 
 FORMS    += MainWindow.ui
