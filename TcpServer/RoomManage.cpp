@@ -3,6 +3,9 @@
 #include <QSqlQuery>
 #include <QSqlError>
 #include "Room.h"
+#include "DataBase.h"
+#include "RoomVector.h"
+#include "NewUserVector.h"
 RoomManage::RoomManage()
 {
 
@@ -16,6 +19,10 @@ void RoomManage::Handle(QTcpSocket *socket, const Protocol &p) {
       break;
     case Protocol::CreateRoom:
       this->CreateHostRoom(socket,p);
+      break;
+  case Protocol::CloseRoom:
+      this->CloseHostRoom(socket,p);
+      break;
     default:
       break;
 
@@ -100,7 +107,7 @@ void RoomManage::CreateHostRoom(QTcpSocket *socket, const Protocol &p) {
   instance->CreatConnection();
   double money = 0.0f;
   int level = 0;
-
+  qDebug()<<"aaa";
   QString name = p["user_name"].toString();
   QString hostname = p["room_name"].toString();
 
@@ -133,10 +140,12 @@ void RoomManage::CreateHostRoom(QTcpSocket *socket, const Protocol &p) {
   room_ip = room_ip.setNum(audio_port);
   ip += room_ip;
 
+  qDebug()<< "随机产生的IP地址:" << ip;
+
   camera_port = 6000 + qrand()%2000;//摄像头端口
   audio_port = camera_port + qrand()%10;//音频端口
 
-  //创建一个房间实例
+  //创建一个主播房间实例
   Room host_room(hostname,name,socket,ip,camera_port,audio_port);
   /*房间容器*/
   RoomVector *room_vector = RoomVector::GetInstance();
@@ -159,20 +168,118 @@ void RoomManage::CreateHostRoom(QTcpSocket *socket, const Protocol &p) {
       pRet["audio_port"] = audio_port;
     }
   }
+  socket->write(pRet.pack());
   //直播间创建成功，直播间大厅自动刷新已存在的直播间
   NewUserVector* Ninstance = NewUserVector::GetInstance();//这是一个单例，因此只有一个对象
-
+  QVector<SocketHandle*>& sh =  Ninstance->GetAllSockets();
+  for(QVector<SocketHandle*>::iterator it = sh.begin(); it != sh.end(); it++) {
+    QTcpSocket* socketTmp = (*it)->GetSocket();//-------------------------------------这里有待商榷
+    this->RoomListHandle(socketTmp,p);
+  }
 
 }
 
+//=====账户登录,下线，注销后，刚申请完主播房间后 刷新 账户 左边的正直播的房间=====//
+void RoomManage::RoomListHandle(QTcpSocket *socket, const Protocol &p) {
+  QString name =p["user_name"].toString();
+  qDebug() << "房间名列表-服务器接收账户：" << name;
+
+  /*构造一个返回在room房间里面的直播间列表的包*/
+  Protocol pRet(Protocol::RoomList);
+
+  RoomVector* rv = RoomVector::GetInstance();
+  QVector<Room> chat_rooms = rv->GetAllChat();
+
+  int count = 1;
+  for(QVector<Room>::iterator it = chat_rooms.begin(); it!=chat_rooms.end(); it++) {
+    pRet[QString::number(count)] = it->GetHostRoomName();
+    count++;
+  }
+  pRet["result"] = "RoomListTrue";
+  socket->write((pRet.pack()));
+  return;
+}
 
 
+//====关闭直播账户====//
+void RoomManage::CloseHostRoom(QTcpSocket *socket, const Protocol &p) {
+  QString host_name = p["host_name"].toString();//房间名
+  QString user_name = p["user_name"].toString();//账户名
+  Protocol pRet(Protocol::CloseRoom);//-------------------------------------------------------------
+  Protocol pUse(Protocol::UserLset);
+  qDebug() <<"服务器接收到房间名/账户名:" <<host_name<<user_name;
 
+  RoomVector *rv = RoomVector::GetInstance();
+  QVector<Room>& chatrooms = rv->GetAllChat();
+  for(QVector<Room>::iterator it = chatrooms.begin(); it!=chatrooms.end(); it++) {
+    if(it->GetHostRoomName() == host_name) {//找到主播房间名
+      QVector<Account_t>& per = it->GetAudience();//找到这个主播房间下对应的所有观众（放在容器里面）
 
+      //判断是否为主播关闭窗口：QVector<Room>存了所有关于主播房间的类，找到这个含有房间名/账户名的类，与传过来的user_name 对比
+      if(it->GetHostPreson() == user_name) {
+        for(QVector<Account_t>::iterator ip = per.begin(); ip!= per.end(); ip++) {
+          //下面两行的意思是(要关闭的主播房间)里面所的观众窗口全部退出观看窗口，返回到大厅
+          pRet["result"] = "CloseHostRoomTrue";
+          ip->socket->write(pRet.pack());//遍历，所有游客关闭窗口
 
+          this->AccountRefresh(ip->socket,ip->name);
+        }
 
+        //防止直播间只有主播自己的情况，无法进入上述for循环，则直接读到如下语句
+        pRet["result"] = "CloseHostRoomTrue";
+        it->GetSocket()->write(pRet.pack());
+        this->AccountRefresh(it->GetSocket(),it->GetHostPreson());
 
+        //当主播退出该直播房间后，将该直播房间从QVector<Room>容器中删除
+        rv->EraseRoom(*it);
 
+        //主播房间关闭成功，直播间大厅自动刷新已存在的主播间
+        NewUserVector* instance = NewUserVector::GetInstance();
+        QVector<SocketHandle*>& sh = instance->GetAllSockets();
+        for(QVector<SocketHandle*>::iterator it = sh.begin(); it != sh.end(); it++) {
+          QTcpSocket* socketTmp = (*it)->GetSocket();
+          this->RoomListHandle(socketTmp,p);
+        }
+        break;
+      } else {
+
+      }
+
+    }
+
+  }
+  return ;
+}
+
+void RoomManage::AccountRefresh(QTcpSocket *socket, QString name) {
+  DataBase* instance = DataBase::GetInstance();
+  instance->CreatConnection();
+
+  Protocol pRet(Protocol::RoomListPer);
+
+  QSqlQuery query;
+  double money = 0.0f;
+  int level = 0;
+  query.prepare("select * from tb_user where user_name = :user_name");
+  query.bindValue(":user_name", name);
+  bool ret = query.exec();
+  if(!ret) {
+    qDebug()<<query.lastError().text();
+    pRet["result"] = "RoomListPerFalse";
+  } else {
+    while(query.next()) {
+      money = query.value(4).toDouble();
+      level = query.value(5).toInt();
+    }
+    pRet["result"] = "RoomListPerTrue";
+    pRet["user_name"] = name;
+    pRet["money"] = money;
+    pRet["score"] = level;
+  }
+  instance->RemoveConnection();
+  socket->write(pRet.pack());
+  return ;
+}
 
 
 

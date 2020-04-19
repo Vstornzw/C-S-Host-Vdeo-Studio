@@ -4,6 +4,8 @@
 #include <QVector>
 #include "Room.h"
 
+//RoomVector是一个单例，管理主播创建房间的类，QVector<Room>是所有主播创立的房间的容器
+
 class RoomVector
 {
 public:
@@ -12,6 +14,11 @@ public:
   bool CheckRoom(const Room& room);
 
   bool InserRoom(const Room& room);
+
+  QVector<Room>& GetAllChat();
+
+  //主播退出直播间之后，将该房间从QVector<Room>容器中删除
+  bool EraseRoom(const Room& room);
 
 
 private:

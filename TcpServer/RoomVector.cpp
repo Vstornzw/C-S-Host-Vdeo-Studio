@@ -15,8 +15,8 @@ RoomVector* RoomVector::GetInstance() {
 bool RoomVector::CheckRoom(const Room &room) {
   QVector<Room>::iterator it;
   for(it = chat_room.begin(); it!=chat_room.end(); it++) {
-    //确保一个客户端只能创建一个直播间
-    if(room.GetHostRoomName() == it->GetHostRoomName() || room.GetSocket() == it->GetSocket()) {
+    //确保一个客户端只能创建一个直播间,并且不能和已存在的房间重名
+    if(room.GetHostRoomName() == it->GetHostRoomName() || room.GetSocket() == it->GetSocket()) {//判断条件就两条
       return true;
     }
   }
@@ -27,3 +27,43 @@ bool RoomVector::InserRoom(const Room &room) {
   chat_room.push_back(room);
   return true;
 }
+
+QVector<Room>& RoomVector::GetAllChat() {
+  return this->chat_room;
+}
+
+bool RoomVector::EraseRoom(const Room &room) {
+  QVector<Room>::iterator it;
+  for(it = chat_room.begin(); it != chat_room.end(); it++) {
+    if(room.GetHostRoomName() == it->GetHostRoomName()) {
+      chat_room.erase(it);//-------------------------------------------直接删除it
+      return true;
+    }
+  }
+  return false;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

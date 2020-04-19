@@ -5,6 +5,9 @@
 #include "DataBase.h"
 #include "RoomVector.h"
 #include "NewUserVector.h"
+
+#include "protocol.h"
+#include <QTcpSocket>
 class RoomManage :public Ihandler
 {
 public:
@@ -19,6 +22,12 @@ public:
   bool UpdataMoney(const QString & name,double money);
   //创建主播房间
   void CreateHostRoom(QTcpSocket *socket,const Protocol &p);
+  //所有账户左侧刷新已创建的主播房间名
+  void RoomListHandle(QTcpSocket *socket, const Protocol &p);
+  //关闭主播房间
+  void CloseHostRoom(QTcpSocket *socket, const Protocol &p);
+  //刷新账户在大厅的信息，只要游客送了礼，再回去大厅以后，金钱等数据肯定要改变
+  void AccountRefresh(QTcpSocket *socket, QString name);
 
 };
 

@@ -30,7 +30,10 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::Charge:
     i_handle = new RoomManage();//账户充值 ，这里要加入RoomManage.h文件
     break;
-  case Protocol::CloseRoom://创建直播间
+  case Protocol::CreateRoom://创建直播间//我写成过CloseRoom 哈哈一直出错没有找到原因
+    i_handle = new RoomManage();
+    break;
+  case Protocol::CloseRoom://关闭直播间
     i_handle = new RoomManage();
     break;
   default:
