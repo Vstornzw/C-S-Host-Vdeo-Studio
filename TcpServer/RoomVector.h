@@ -20,6 +20,7 @@ public:
   //主播退出直播间之后，将该房间从QVector<Room>容器中删除
   bool EraseRoom(const Room& room);
 
+  void InstertVisitor(const QString& host_name, Account_t visitor);
 
 private:
   RoomVector();

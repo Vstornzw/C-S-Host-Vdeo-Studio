@@ -17,14 +17,14 @@ public:
     DeleteUser,
 
     CreateRoom,
-    RoomList, //Live Room List
-    UserLset,//Groop Member List
-    JoinRoom,//Join The Studio
+    RoomList,
+    UserLset,  // 直播间列表
+    JoinRoom,
     Chat,
     Gift,
     CloseRoom,
     Charge,
-    RoomListPer
+    RoomListPer  //大厅账户刷新
   };
 
   Protocol(Type type = none) : type(type) {}//构造函数

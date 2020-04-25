@@ -29,6 +29,10 @@ public:
   //刷新账户在大厅的信息，只要游客送了礼，再回去大厅以后，金钱等数据肯定要改变
   void AccountRefresh(QTcpSocket *socket, QString name);
 
+  //加入主播直播房间
+  void JoinHostRoom(QTcpSocket *socket,const Protocol &p);
+  //主播和游客的视频间访客栏刷新
+  void VisitorBarRefresh(QTcpSocket *socket,const Protocol &p);
 };
 
 #endif // ROOMMANAGE_H
