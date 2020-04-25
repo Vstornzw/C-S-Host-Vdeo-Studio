@@ -44,13 +44,17 @@ public:
 
 
 private:
+  //构造函数时，初始化成员变量的顺序要与类声明中的变量顺序相对应。若不对应，则会出现如下错误，解决的办法就是按照顺序进行初始化
+  //warning "will be initialized after [-Wreorder]
   QString host_name;          //房间名
   QString host_person;        //主播，直播间与主播绑定，金钱和等级会被记录
-  QVector<Account_t> audience;  //直播间观看者
+  QTcpSocket *socket;         //房间套接字
   QString address;            //组播地址
   int camera_port;            //视频端口
   int audio_port;             //音频端口
-  QTcpSocket *socket;         //房间套接字
+
+  QVector<Account_t> audience;  //直播间观看者
+
 };
 
 #endif // ROOMM_H

@@ -36,6 +36,9 @@ void StrategyHandle::Handle(QTcpSocket *socket, const Protocol &p) {
   case Protocol::CloseRoom://关闭直播间
     i_handle = new RoomManage();
     break;
+  case Protocol::JoinRoom://加入直播间
+    i_handle = new RoomManage();
+    break;
   default:
     break;
   }

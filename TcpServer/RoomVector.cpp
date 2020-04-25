@@ -43,7 +43,14 @@ bool RoomVector::EraseRoom(const Room &room) {
   return false;
 }
 
-
+void RoomVector::InstertVisitor(const QString &host_name, Account_t visitor) {
+  QVector<Room>::iterator it;
+  for(it =chat_room.begin(); it!=chat_room.end(); it++) {
+    if(host_name == it->GetHostRoomName()) {
+      it->InserAudience(visitor);
+    }
+  }
+}
 
 
 
