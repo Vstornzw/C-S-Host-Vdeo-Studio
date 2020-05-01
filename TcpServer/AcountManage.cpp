@@ -21,7 +21,6 @@ void AcountManage::Handle(QTcpSocket *socket, const Protocol &p) {
     this->RegistHandle(socket,p);//注意这里和30行区别
     break;
   case Protocol::Login:
-    qDebug()<<"测试2";
     this->LoginHandle(socket,p);
     break;
   case Protocol::QuitClient:

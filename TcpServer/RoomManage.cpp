@@ -142,7 +142,7 @@ void RoomManage::CreateHostRoom(QTcpSocket *socket, const Protocol &p) {
   room_ip = room_ip.setNum(audio_port);
   ip += room_ip;
 
-  qDebug()<< "随机产生的IP地址:" << ip;
+  qDebug()<< "IP:" << ip;//随机产生的IP地址
 
   camera_port = 6000 + qrand()%2000;//摄像头端口
   audio_port = camera_port + qrand()%10;//音频端口
